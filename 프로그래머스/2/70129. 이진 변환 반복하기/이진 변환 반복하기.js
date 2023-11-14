@@ -4,7 +4,7 @@ function solution(s) {
     let result = s;
     
     while (result !== "1") {
-        const str = result.split("").map((char) => {
+        result = result.split("").map((char) => {
             if (char === "0") {
                 zeroCount++;
                 return "";
@@ -13,9 +13,9 @@ function solution(s) {
             }
         }).join("");
     
-        result = str.length.toString(2);
+        result = result.length.toString(2);
         binaryTransferCount++;
     }
     
-    return [binaryTransferCount, zeroCount]
+    return [binaryTransferCount, zeroCount];
 }
