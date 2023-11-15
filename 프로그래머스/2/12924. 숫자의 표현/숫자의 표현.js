@@ -3,14 +3,10 @@ function solution(n) {
     let count = 1;
     
     for (let i = 2; i <= maxSearchNumber; i++) {
-        if (i % 2 === 0) {
-            if ((n + (i/2)) % i === 0) {
-                count++;
-            }
-        } else {
-            if (n % i === 0) {
-                count++;
-            }
+        if (i % 2 === 0 && (n + (i/2)) % i === 0) {
+            count++;
+        } else if (i % 2 !== 0 && n % i === 0) {
+            count++;
         }
     }
     
