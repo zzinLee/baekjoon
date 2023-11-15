@@ -15,7 +15,8 @@ function solution(n) {
 
 
 function max(n) {
-    let k = Math.ceil(n/2);
+    let k = Math.floor(Math.sqrt(2 * n));
+    
 
     while (k * (k + 1) > 2 * n) {
         k--;
