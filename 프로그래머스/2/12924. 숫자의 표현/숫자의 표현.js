@@ -1,25 +1,11 @@
 function solution(n) {
-    const maxSearchNumber = max(n);
-    let count = 1;
+    let count = 0;
     
-    for (let i = 2; i <= maxSearchNumber; i++) {
-        if (i % 2 === 0 && (n + (i/2)) % i === 0) {
-            count++;
-        } else if (i % 2 !== 0 && n % i === 0) {
+    for (let i = 1; i < n; i++) {
+        if (i % 2 === 1 && n % i === 0) {
             count++;
         }
     }
     
-    return count;
-}
-
-
-function max(n) {
-    let k = Math.ceil(n/2);
-
-    while (k * (k + 1) > 2 * n) {
-        k--;
-    }
-    
-    return k;
+    return n % 2 ? count + 1: count;
 }
