@@ -6,16 +6,17 @@ const [participantCards, controlCards] = [input[1].split(" ").map(Number), input
 
 function solution(participants, controls) {
   const [n, m] = [participants.length, controls.length];
-  const cards = {};
-  const ans = [];
+  const cards = new Map();
 
-  for (const card of participants) {
-    cards[card] = (cards[card] || 0) + 1;
-  }
+  participants.forEach((number) => {
+    if (cards.has(number)) {
+      cards.set(number, cards.get(number) + 1);
+    } else {
+      cards.set(number, 1);
+    }
+  });
 
-  for (const card of controls) {
-    ans.push(cards[card] || 0);
-  }
+  const ans = controlCards.map((num) => cards.get(num) || 0);
 
   return ans.join(" ");
 }
