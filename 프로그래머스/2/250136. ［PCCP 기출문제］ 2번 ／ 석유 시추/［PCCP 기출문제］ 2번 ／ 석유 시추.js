@@ -61,13 +61,5 @@ function solution(land) {
         }
     }
     
-    let max = -Infinity;
-    
-    for (const area of Object.values(oilAreaByCoords)) {
-        if (max < area) {
-            max = area;
-        }
-    }
-    
     return Math.max(...Object.values(oilAreaByCoords));
 }
