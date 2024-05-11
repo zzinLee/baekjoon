@@ -69,5 +69,5 @@ function solution(land) {
         }
     }
     
-    return max;
+    return Math.max(...Object.values(oilAreaByCoords));
 }
