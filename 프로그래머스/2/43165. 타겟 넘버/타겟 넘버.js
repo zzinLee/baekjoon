@@ -7,7 +7,7 @@ function solution(numbers, target) {
         if (index < numbers.length) {
             search(index + 1, sum + numbers[index]);
             search(index + 1, sum - numbers[index]);
-        } else {
+        } else if (index === numbers.length) {
             if (sum === target) {
                 ans++;
             }
