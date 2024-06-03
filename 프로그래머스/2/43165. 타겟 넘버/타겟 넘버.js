@@ -1,12 +1,12 @@
 function solution(numbers, target) {
     let ans = 0;
     
-    search(0, 0);
+    DFS(0, 0);
     
-    function search(index, sum) {
+    function DFS(index, sum) {
         if (index < numbers.length) {
-            search(index + 1, sum + numbers[index]);
-            search(index + 1, sum - numbers[index]);
+            DFS(index + 1, sum + numbers[index]);
+            DFS(index + 1, sum - numbers[index]);
         } else if (index === numbers.length) {
             if (sum === target) {
                 ans++;
@@ -16,4 +16,3 @@ function solution(numbers, target) {
     
     return ans;
 }
-
