@@ -1,36 +1,47 @@
-const isChangable = (word, changeWord) => {
-    let diffCount = 0;
-        
-    for (let i = 0; i < word.length; i++) {
-        if (word[i] !== changeWord[i]) {
-            diffCount++;
-        }
-    }
-
-    return diffCount === 1;
-};
-
 function solution(begin, target, words) {
-    const set = new Set();
-    const answer = [];
-
-    DFS(begin, 0, set);
-    
-    function DFS(current, count, visited) {
-        if (current === target) {
-            answer.push(count);
-            
-            return;
-        }
+    const canExchange = (origin, target) => {
+        const len = origin.length;
+        let differentWord = 0;
         
-        visited.add(current);
-
-        for (let i = 0; i < words.length; i++) {
-            if (!visited.has(words[i]) && isChangable(current, words[i])) {
-                DFS(words[i], count + 1, visited);
+        for (let i = 0; i < len; i++) {
+            if (origin[i] !== target[i]) {
+                differentWord++;
             }
         }
+        
+        return differentWord === 1;
+    };
+    
+    const mappingArray = (array) => {
+        const set = new Set();
+        
+        array.forEach((element) => {
+           set.add(element);
+        });
+        
+        return set;
+    };
+    
+    const records = mappingArray(words);
+    
+    if (!records.has(target)) return 0;
+    
+    const q = [[begin, 0]];
+    
+    while (q.length || records.size) {
+        let [current, count] = q.shift();
+        
+        if (current === target) {
+            return count;
+        }
+        
+        for (const comp of records) {            
+            if (canExchange(current, comp)) {
+                q.push([comp, count + 1]);
+                records.delete(comp);
+            }
+        }    
     }
     
-    return answer.length ? Math.min(...answer) : 0; 
+    return changeCount;
 }
