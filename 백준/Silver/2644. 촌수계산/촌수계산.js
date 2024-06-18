@@ -4,56 +4,64 @@ const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : INPUT_PATH;
 const input = fs.readFileSync(filePath).toString().trim().split("\n");
 
-const total = Number(input.shift());
-const [start, target] = input.shift().split(" ").map(Number);
-const relations = Number(input.shift());
-const graph = input.map((relation) => relation.split(" ").map(Number));
+const n = Number(input.shift());
+const targets = input.shift().split(" ").map(Number);
+const m = Number(input.shift());
+const relations = input.map(rel => rel.split(" ").map(Number));
 
-function solution(graph, start, target) {
-  const childrenMap = new Map(); //부모: 자식들
-  const parentMap = new Map(); //자식: 부모
+function solution(targets, relations) {
+  const [target1, target2] = targets;
   const visited = new Set();
+  const parentToChildren = new Map(); //부모는 자식 여러개
+  const childrenToParent = new Map(); //자식은 부모하나
 
-  for (const [parent, child] of graph) {
-    if (childrenMap.has(parent)) {
-      const childrens = childrenMap.get(parent);
-      childrens.push(child);
+  for (const [parent, child] of relations) {
+    childrenToParent.set(child, parent);
+
+    if (parentToChildren.has(parent)) {
+      const children = parentToChildren.get(parent);
+      children.push(child);
+
+      parentToChildren.set(parent, children);
     } else {
-      childrenMap.set(parent, [child]);
-    }
-
-    if (!parentMap.has(child)) {
-      parentMap.set(child, parent);
+      parentToChildren.set(parent, [child]);
     }
   }
 
-  const q = [[start, 0]];
+  //BFS순회
+  const q = [[target1, 0]];
 
   while (q.length) {
-    const [cur, count] = q.shift();
+    const [searchTarget, link] = q.shift();
+    visited.add(searchTarget);
 
-    if (cur === target) {
-      return count;
+    if (searchTarget === target2) {
+      return link;
     }
 
-    if (visited.has(cur)) {
-      continue;
+    if (parentToChildren.has(searchTarget)) {
+      const childrenValues = parentToChildren.get(searchTarget);
+      const children = [];
+
+      for (const child of childrenValues) {
+        if (!visited.has(child)) {
+          children.push([child, link + 1]);
+        }
+      }
+
+      q.push(...children);
     }
 
-    if (parentMap.has(cur)) {
-      q.push([parentMap.get(cur), count + 1]);
+    if (childrenToParent.has(searchTarget)) {
+      const parent = childrenToParent.get(searchTarget);
+
+      if (!visited.has(parent)) {
+        q.push([parent, link + 1]);
+      }
     }
-
-    if (childrenMap.has(cur)) {
-      const childrens = childrenMap.get(cur).map((child) => [child, count + 1]);
-
-      q.push(...childrens);
-    }
-
-    visited.add(cur);
   }
 
   return -1;
 }
 
-console.log(solution(graph, start, target));
+console.log(solution(targets,relations));
