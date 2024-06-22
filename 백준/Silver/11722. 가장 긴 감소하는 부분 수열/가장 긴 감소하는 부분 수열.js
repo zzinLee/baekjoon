@@ -8,8 +8,9 @@ const numbers = input[1].split(" ").map(Number);
 
 function f(nums) {
   const DP = new Array(nums.length).fill(1);
+  let max = -Infinity;
 
-  for (let current = 1; current < nums.length; current++) {
+  for (let current = 0; current < nums.length; current++) {
     const currentValue = nums[current];
 
     for (let prev = 0; prev < current; prev++) {
@@ -19,11 +20,13 @@ function f(nums) {
         DP[current] = Math.max(DP[prev] + 1, DP[current]);
       }
     }
+
+    if (max < DP[current]) {
+      max = DP[current]; //이 풀이에서 문제가 있다면, current = 0 을 순회하지 않는다는 점 뿐인데,,
+    }
   }
-  
-  DP.sort((a, b) => a - b);
-    
-  return DP.pop();
+
+  return max;
 }
 
 console.log(f(numbers));
