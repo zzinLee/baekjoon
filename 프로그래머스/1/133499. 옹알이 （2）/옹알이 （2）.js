@@ -1,22 +1,16 @@
 function solution(babbling) {
-    const can = ['aya','ye','woo','ma'];
-    let count = 0;
+    const canSpeak = ["aya", "ye", "woo", "ma"];
     
-    for(let i = 0; i < babbling.length; i++){
-        let babble = babbling[i];
-        
-        for(let j = 0; j < can.length; j++){
-            if(babble.includes(can[j].repeat(2))){
-                break;
+    for (let index = 0; index < babbling.length; index++) {
+        for (const word of canSpeak) {
+            if (babbling[index].includes(word.repeat(2))) {
+                continue;
+            } else {
+                babbling[index] = babbling[index].replaceAll(word, " ");
             }
-            
-            babble = babble.split(can[j]).join(" ");
-        }
-        
-        if(babble.split(" ").join("").length === 0){
-            count += 1;
         }
     }
     
-    return count;
+    const transformed = babbling.map((babble) => babble.replaceAll(" ", ""));
+    return transformed.filter((bubble) => bubble.length === 0).length;
 }
